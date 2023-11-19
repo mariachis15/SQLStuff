@@ -1,0 +1,50 @@
+USE firma_L5
+
+-- ACTIVITATI PROPUSE:
+
+-- Care este media salariilor pe un departament specificat prin nume ? (AVG)
+
+  SELECT AVG(Salariu) FROM vAngajati WHERE Departament LIKE 'MANAGEMENT';
+
+-- Care sunt mediile salariilor angajaților grupate pe funcții) ? (AVG, GROUP BY)
+
+  SELECT Functie, AVG(Salariu) SalariuMediu FROM vAngajati GROUP BY Functie;
+
+-- Care este cel mai mic/mare salariu din companie ? (MIN, MAX)
+
+  SELECT MIN(Salariu) SalariuMinim FROM vAngajati;
+  SELECT MAX(Salariu) SalariuMaxim FROM vAngajati;
+
+-- Care este cel mai mic/mare salariu dintr-un departament specificat ? (MIN, MAX)
+
+  SELECT MIN(Salariu) SalariuMinim FROM vAngajati WHERE Departament LIKE 'Productie';
+  SELECT MAX(Salariu) SalariuMaxim FROM vAngajati WHERE Departament LIKE 'Productie';
+
+-- Care sunt cele mai mici și cele mai mari salarii pe departamente ? (MIN, MAX, GROUP BY)
+
+  SELECT Departament, MIN(Salariu) SalariuMinim FROM vAngajati GROUP BY Departament;
+  SELECT Departament, MAX(Salariu) SalariuMaxim FROM vAngajati GROUP BY Departament;
+
+-- Câți angajați sunt în fiecare departament ? (COUNT, GROUP BY)
+
+  SELECT Departament, COUNT(IdAngajat) NrAngajati FROM vAngajati GROUP BY Departament;
+
+-- Care este suma salariilor angajaților din fiecare departament ? (SUM, GROUP BY)
+
+  SELECT Departament, SUM(Salariu) SalariuTotal FROM vAngajati GROUP BY Departament;
+
+-- Listați angajații, grupati pe departamente și vechimi (rotunjite la an) ? (GROUP BY)
+
+  SELECT Departament, DataAngajarii, Nume, Prenume,  ROUND(DATEDIFF(year, DataAngajarii, GETDATE()), 0) VechimeInAni FROM vAngajati GROUP BY Departament, DataAngajarii, Nume, Prenume;
+
+-- Care sunt angajații, grupați pe funcții, ce au o vechime mai mare de 10 ani ? (GROUP BY)
+
+  SELECT Functie, Nume, Prenume FROM vAngajati WHERE DATEDIFF(year, DataAngajarii, GETDATE()) > 10 GROUP BY Functie, Nume, Prenume;
+
+-- Care sunt angajații, grupați pe departamente, ce au vârsta de minim 30 ani ? (GROUP BY)
+
+  SELECT Departament, Nume, Prenume FROM vAngajati WHERE DATEDIFF(year, DataNasterii, GETDATE()) > 30 GROUP BY Departament, Nume, Prenume;
+
+-- Care sunt departamentele care au media salariilor mai mare decat 3000 ? (AVG, GROUP BY)
+
+  SELECT Departament, AVG(Salariu) SalariuMediu3000 FROM vAngajati  GROUP BY Departament HAVING AVG(Salariu) > 3000;
